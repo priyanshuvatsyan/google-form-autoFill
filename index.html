@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Form Auto-Filler</title>
+    <script>
+        async function autoFillForm() {
+            let formUrl = document.getElementById("formLink").value;
+            let button = document.getElementById("submitButton");
+
+            if (!formUrl || !formUrl.includes("docs.google.com/forms")) {
+                return alert("Enter a valid Google Form link!");
+            }
+
+            let responses = {
+                "Name": "Priyanshu Vatsyan",
+                "Email": "priyanshuvatsyan@gmail.com"
+            };
+
+            let requestData = { formUrl, responses };
+            let scriptUrl = "https://script.google.com/macros/s/AKfycbxK_N3aJ7fhwd8rcp5djlEl7C6rEfxnj9kwQWSoUxfbi0M6iOXUEEot_8_nzBmw1BHB2A/exec";
+
+            try {
+                button.disabled = true;
+                button.innerText = "Processing...";
+
+                let response = await fetch(scriptUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(requestData)
+                });
+
+                if (!response.ok) throw new Error("Failed to fetch. Server error!");
+
+                let result = await response.json();
+                alert(result.message);
+                window.open(result.submitUrl, "_blank");
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Something went wrong. Please check your script deployment.");
+            } finally {
+                button.disabled = false;
+                button.innerText = "Auto-Fill & Submit";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Google Form Auto-Filler</h2>
+    <input type="text" id="formLink" placeholder="Paste Google Form link here..." />
+    <button id="submitButton" onclick="autoFillForm()">Auto-Fill & Submit</button>
+</body>
+</html>
