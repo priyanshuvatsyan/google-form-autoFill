@@ -7,11 +7,7 @@
     <script>
         async function autoFillForm() {
             let formUrl = document.getElementById("formLink").value;
-            let button = document.getElementById("submitButton");
-
-            if (!formUrl || !formUrl.includes("docs.google.com/forms")) {
-                return alert("Enter a valid Google Form link!");
-            }
+            if (!formUrl) return alert("Enter a valid Google Form link!");
 
             let responses = {
                 "Name": "Priyanshu Vatsyan",
@@ -19,29 +15,21 @@
             };
 
             let requestData = { formUrl, responses };
-            let scriptUrl = "https://script.google.com/macros/s/AKfycbxK_N3aJ7fhwd8rcp5djlEl7C6rEfxnj9kwQWSoUxfbi0M6iOXUEEot_8_nzBmw1BHB2A/exec";
+            let scriptUrl = "https://script.google.com/macros/s/AKfycbzS3NVGHYje64lJPn-KOrrhFMMdKrTQLkM6cRFlK1BehmbjUifCn7gYXGRloyjSgVYt/exec"; // Replace this
 
             try {
-                button.disabled = true;
-                button.innerText = "Processing...";
-
                 let response = await fetch(scriptUrl, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(requestData)
                 });
 
-                if (!response.ok) throw new Error("Failed to fetch. Server error!");
-
                 let result = await response.json();
                 alert(result.message);
-                window.open(result.submitUrl, "_blank");
+                if (result.submitUrl) window.open(result.submitUrl, "_blank");
             } catch (error) {
                 console.error("Error:", error);
-                alert("Something went wrong. Please check your script deployment.");
-            } finally {
-                button.disabled = false;
-                button.innerText = "Auto-Fill & Submit";
+                alert("Failed to send request. Check console for details.");
             }
         }
     </script>
@@ -49,6 +37,6 @@
 <body>
     <h2>Google Form Auto-Filler</h2>
     <input type="text" id="formLink" placeholder="Paste Google Form link here..." />
-    <button id="submitButton" onclick="autoFillForm()">Auto-Fill & Submit</button>
+    <button onclick="autoFillForm()">Auto-Fill & Submit</button>
 </body>
 </html>
