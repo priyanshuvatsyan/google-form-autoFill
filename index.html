@@ -15,10 +15,13 @@
             };
 
             let requestData = { formUrl, responses };
-            let scriptUrl = "https://script.google.com/macros/s/AKfycbzS3NVGHYje64lJPn-KOrrhFMMdKrTQLkM6cRFlK1BehmbjUifCn7gYXGRloyjSgVYt/exec"; // Replace this
+
+            let scriptUrl = "https://script.google.com/macros/s/AKfycbxuNajNrUnQM6HY2zRKuYfauZbOb6ANVzHxNXbbCKlvRkajgjVYYR6HNoetoynmuoz0cA/exec";
+
+            let proxyUrl = "https://cors-anywhere.herokuapp.com/"; // Use a CORS proxy
 
             try {
-                let response = await fetch(scriptUrl, {
+                let response = await fetch(proxyUrl + scriptUrl, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(requestData)
