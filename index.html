@@ -4,37 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Form Auto-Filler</title>
-    <script>
-        async function autoFillForm() {
-            let formUrl = document.getElementById("formLink").value;
-            if (!formUrl) return alert("Enter a valid Google Form link!");
-
-            let responses = {
-                "Name": "Priyanshu Vatsyan",
-                "Email": "priyanshuvatsyan@gmail.com"
-            };
-
-            let requestData = { formUrl, responses };
-
-            let scriptUrl = "https://script.google.com/macros/s/AKfycbzsI-jSgTyu-S_JXGlHX_cB_6kxniwQcIRCxvW1WQTfQYl412LzbFLo7jkhjDzW3PXfzQ/exec";
-
-            let proxyUrl = "https://cors-anywhere.herokuapp.com/"; // Use a CORS proxy
-
-            try {
-                let response = await fetch(proxyUrl + scriptUrl, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(requestData)
-                });
-
-                let result = await response.json();
-                alert(result.message);
-                if (result.submitUrl) window.open(result.submitUrl, "_blank");
-            } catch (error) {
-                console.error("Error:", error);
-                alert("Failed to send request. Check console for details.");
-            }
+    <scrasync function autoFillForm() {
+        let formUrl = document.getElementById("formLink").value;
+        if (!formUrl) return alert("Enter a valid Google Form link!");
+    
+        let responses = {
+            "Name": "Priyanshu Vatsyan",
+            "Email": "priyanshuvatsyan@gmail.com"
+        };
+    
+        let requestData = { formUrl, responses };
+    
+        let scriptUrl = "https://script.google.com/macros/s/YOUR_DEPLOYED_SCRIPT_ID/exec";
+    
+        try {
+            let response = await fetch(scriptUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(requestData)
+            });
+    
+            let result = await response.json();
+            alert(result.message);
+            if (result.submitUrl) window.open(result.submitUrl, "_blank");
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Failed to send request. Check console for details.");
         }
+    }
+    
     </script>
 </head>
 <body>
